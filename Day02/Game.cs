@@ -2,8 +2,8 @@
 
 public class Game
 {
-    public required int Id { get; set; }
-    public List<Set> Sets { get; set; } = new();
+    public required int Id { get; init; }
+    public List<Set> Sets { get; init; } = new();
 }
 
 public static class GameFactory
