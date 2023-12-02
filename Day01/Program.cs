@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualBasic.FileIO;
-
-await Part1();
+﻿await Part1();
 await Part2();
 
 
@@ -39,19 +37,17 @@ static async Task Part2()
 static string GetFirstAppearance(Dictionary<string, int> dictionary, string input)
 {
     return dictionary.Select(kvp => (Index: input.IndexOf(kvp.Key, StringComparison.Ordinal), Value: kvp.Value))
-                     .Where(ivp => ivp.Index >= 0)
-                     .MinBy(ivp => ivp.Index)
-                     .Value
-                     .ToString();
-    }
+        .Where(ivp => ivp.Index >= 0)
+        .MinBy(ivp => ivp.Index)
+        .Value
+        .ToString();
+}
 
 static string GetLastAppearance(Dictionary<string, int> dictionary, string input)
 {
     return dictionary.Select(kvp => (Index: input.LastIndexOf(kvp.Key, StringComparison.Ordinal), Value: kvp.Value))
-                     .Where(ivp => ivp.Index >= 0)
-                     .MaxBy(ivp => ivp.Index)
-                     .Value
-                     .ToString();
+        .Where(ivp => ivp.Index >= 0)
+        .MaxBy(ivp => ivp.Index)
+        .Value
+        .ToString();
 }
-    
-    
