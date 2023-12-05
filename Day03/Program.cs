@@ -1,11 +1,16 @@
 ﻿using System.Drawing;
 using System.Text;
 
-// parse input
 var lines = await File.ReadAllLinesAsync("input.txt");
 var grid = lines.Select(line => line.ToCharArray()).ToArray();
 
+// Part 1: Given the engine schematic (input.txt), get all numbers that have a symbol around them (excluding dot (.)).
+//         Get the sum of those part numbers.
 Part1(grid, out var numbers, out var coordinates);
+// Part 2: Given the engine schematic (input.txt), get all gear ratios. A gear is an asterisk (*) surrounded by exactly
+//         2 numbers.
+//         The gear ratio is a multiplication of the two numbers surrounding the gear.
+//         Get the sum of all gear ratios.
 Part2(grid, numbers, coordinates);
 return;
 

@@ -1,11 +1,13 @@
-﻿await Part1();
-await Part2();
+﻿var lines = await File.ReadAllLinesAsync("input.txt");
+
+// Part 1: Get the first and last digit per line of input.txt. Combine into whole number and sum.
+await Part1(lines);
+// Part 2: Same as part 1, but now digits can also be spelled out.
+await Part2(lines);
 return;
 
-static async Task Part1()
+static void Part1(string[] lines)
 {
-    var lines = (await File.ReadAllLinesAsync("input.txt"));
-    
     var sum =
         lines.Select(line => line.First(char.IsDigit) + "" + line.Last(char.IsDigit))
             .Select(firstAndLastDigit => Convert.ToInt32(firstAndLastDigit)).Sum();
@@ -14,7 +16,7 @@ static async Task Part1()
 }
 
 
-static async Task Part2()
+static void Part2(string[] lines)
 {
     var stringToNumbers = new Dictionary<string, int>
     {
@@ -22,7 +24,6 @@ static async Task Part2()
         { "eight", 8 }, { "nine", 9 }, { "1", 1 }, { "2", 2 }, { "3", 3 }, { "4", 4 }, { "5", 5 }, { "6", 6 },
         { "7", 7 }, { "8", 8 }, { "9", 9 }
     };
-    var lines = await File.ReadAllLinesAsync("input.txt");
 
     var sum = lines.Select(line =>
     {

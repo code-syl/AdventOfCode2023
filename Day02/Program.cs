@@ -1,17 +1,19 @@
 ﻿using Day02;
 
-// parse input
 var lines = await File.ReadAllLinesAsync("input.txt");
 var games = lines.Select(GameFactory.CreateGame).ToList();
 
-// solve
+// Part 1: Which games are possible when there are only 12 red, 13 green, and 14 blue cubes, given input.txt as input.
+//         Get the sum of the IDs of those games.
 Part1(games);
+// Part 2: For each game, find the minimum set of cubes needed to play that game (per color). 
+//         Get the power of those minimum sets (multiply each cube amount per set).
+//         Get the sum of the powers of these sets.
 Part2(games);
 return;
 
 static void Part1(IEnumerable<Game> games)
 {
-    // which games are possible with only 12 red, 13 green, and 14 blue cubes
     var sum = games.Where(game => 
         game.Sets.All(set => set is { Red: <= 12, Green: <= 13, Blue: <= 14 })
     ).Sum(game => game.Id);
