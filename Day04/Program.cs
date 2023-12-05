@@ -17,6 +17,12 @@ var scratchCards = lines.Select(line =>
 //         0 or 1 winning picks equals 0 or 1 points. 1+ winning picks = 2^{winning picks - 1} points
 //         Get the sum of total points.
 Part1(scratchCards);
+// Part 2: Given the scratch card input, per card, get the number of selected winning numbers.
+//         Per card, for each winning number, a copy of the next x cards will be generated. 
+//         For example: if Card 1 has 5 winning picks, card 2-3-4-5-6 will be copied one time.
+//         If Card 2 has 2 winning picks, card 3-4 will be copied TWICE, because there are two Card 2s.
+//         You cannot go beyond the last card (Card 219, in this case).
+//         How many total scratch cards do you end up with?
 Part2(scratchCards);
 return;
 
