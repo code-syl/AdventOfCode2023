@@ -1,4 +1,10 @@
-﻿## RedirectedFrom: https://github.com/sch-seiryu/SharpenTheCSharp/blob/main/.gitignore
+﻿.idea/**/sonarlint/
+
+
+
+
+
+## RedirectedFrom: https://github.com/sch-seiryu/SharpenTheCSharp/blob/main/.gitignore
 ##
 ## From 'Jetbrains.gitignore'
 ## URL: https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
