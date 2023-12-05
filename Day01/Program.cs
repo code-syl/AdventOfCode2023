@@ -1,6 +1,6 @@
 ﻿await Part1();
 await Part2();
-
+return;
 
 static async Task Part1()
 {

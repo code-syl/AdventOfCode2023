@@ -6,6 +6,7 @@ var lines = await File.ReadAllLinesAsync("input.txt");
 var grid = lines.Select(line => line.ToCharArray()).ToArray();
 
 Part1(grid);
+return;
 
 static void Part1(char[][] grid)
 {

@@ -7,6 +7,7 @@ var games = lines.Select(GameFactory.CreateGame).ToList();
 // solve
 Part1(games);
 Part2(games);
+return;
 
 static void Part1(IEnumerable<Game> games)
 {
