@@ -26,7 +26,7 @@ Part1(scratchCards);
 Part2(scratchCards);
 return;
 
-static void Part1(IEnumerable<ScratchCard> cards)
+static void Part1(List<ScratchCard> cards)
 {
     var sum = cards.Select(card => card.SelectedNumbers.Intersect(card.WinningNumbers).Count())
         .Select(winningPicks => winningPicks switch
@@ -39,9 +39,25 @@ static void Part1(IEnumerable<ScratchCard> cards)
     Console.WriteLine(sum);
 }
 
-static void Part2(IEnumerable<ScratchCard> cards)
+static void Part2(List<ScratchCard> cards)
 {
-    ;
+    var i = 0;
+    while (i < cards.Count)
+    {
+        for (var j = 0; j < cards[i].Copies; j++)
+        {
+            var winningPicks = cards[i].SelectedNumbers.Intersect(cards[i].WinningNumbers).Count();
+            for (var k = 0; k < winningPicks && i + k + 1 < cards.Count; k++)
+            {
+                cards[i + k + 1].Copies++;
+            }
+        }
+        i++;
+    }
+
+    var sumOfCards = cards.Select(c => c.Copies).Sum();
+
+    Console.WriteLine(sumOfCards);
 }
 
 partial class Program
