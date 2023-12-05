@@ -1,9 +1,9 @@
 ﻿var lines = await File.ReadAllLinesAsync("input.txt");
 
 // Part 1: Get the first and last digit per line of input.txt. Combine into whole number and sum.
-await Part1(lines);
+Part1(lines);
 // Part 2: Same as part 1, but now digits can also be spelled out.
-await Part2(lines);
+Part2(lines);
 return;
 
 static void Part1(string[] lines)
