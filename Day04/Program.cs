@@ -47,7 +47,7 @@ static void Part2(IReadOnlyList<ScratchCard> cards)
         for (var j = 0; j < cards[i].Copies; j++)
         {
             var winningPicksX = 0;
-            foreach (var pick in cards[i].SelectedNumbers)
+            foreach (var pick in cards[i].SelectedNumbers) // do not convert to LINQ
             {
                 if (cards[i].WinningNumbers.Contains(pick)) winningPicksX++;
             }
