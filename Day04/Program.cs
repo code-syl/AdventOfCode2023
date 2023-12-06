@@ -37,29 +37,22 @@ static void Part1(IEnumerable<ScratchCard> cards)
     Console.WriteLine(sum);
 }
 
-static void Part2(IReadOnlyList<ScratchCard> cards)
+static void Part2(List<ScratchCard> cards)
 {
-    var i = 0;
-    while (i < cards.Count)
+    for (var i = 0; i < cards.Count; i++)
     {
-        for (var j = 0; j < cards[i].Copies; j++)
+        // Get the number of winning picks (selected numbers vs. winning numbers)
+        var nrOfWinningPicks = cards[i].SelectedNumbers.Intersect(cards[i].WinningNumbers).Count();
+
+        // Increase each following card's Copies (limited by nrOfWinningPicks) by 1, keeping the list bounds in mind.
+        for (var j = 0; j < nrOfWinningPicks && i + j + 1 < cards.Count; j++)
         {
-            var winningPicksX = 0;
-            foreach (var pick in cards[i].SelectedNumbers) // do not convert to LINQ
-            {
-                if (cards[i].WinningNumbers.Contains(pick)) winningPicksX++;
-            }
-            
-            for (var k = 0; k < winningPicksX && i + k + 1 < cards.Count; k++)
-            {
-                cards[i + k + 1].Copies++;
-            }
+            cards[i + j + 1].Copies += cards[i].Copies;
         }
-        i++;
     }
 
+    // Get the total of all cards (.Copies property)
     var sumOfCards = cards.Select(c => c.Copies).Sum();
-
     Console.WriteLine(sumOfCards);
 }
 
