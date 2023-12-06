@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Data.Common;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using Day04;
 
 var lines = await File.ReadAllLinesAsync("input.txt");
