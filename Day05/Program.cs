@@ -1,3 +1,20 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿// Parse Input:
 
-Console.WriteLine("Hello, World!");
+using System.Text.RegularExpressions;
+
+var seeds = Array.Empty<string>();
+try
+{
+    var streamReader = new StreamReader("input.txt");
+    seeds = Regex.Match(
+        await streamReader.ReadLineAsync() ?? string.Empty, 
+        @"^seeds\:\s(.+)$"
+        ).Groups[1].Value.Split(" ");
+}
+catch (Exception e)
+{
+    Console.WriteLine(e.Message);
+    Environment.Exit(-1);
+}
+
+Console.WriteLine(seeds);
