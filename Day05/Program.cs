@@ -1,20 +1,35 @@
-﻿// Parse Input:
+﻿using Day05;
 
-using System.Text.RegularExpressions;
+const string input = "input.txt";
 
-var seeds = Array.Empty<string>();
-try
+using var streamReader = new StreamReader(input);
+var data = (await streamReader.ReadToEndAsync()).Split("\r\n\r\n");
+var seeds = data[0]
+    .Split(": ")[1]
+    .Split(" ")
+    .Select(long.Parse)
+    .ToList();
+var maps = data[1..]
+    .Select(chunk => new Map(chunk))
+    .ToList();
+
+Part1(seeds, maps);
+Part2(seeds, maps);
+
+return;
+
+static void Part1(List<long> seeds, List<Map> maps)
 {
-    var streamReader = new StreamReader("input.txt");
-    seeds = Regex.Match(
-        await streamReader.ReadLineAsync() ?? string.Empty, 
-        @"^seeds\:\s(.+)$"
-        ).Groups[1].Value.Split(" ");
-}
-catch (Exception e)
-{
-    Console.WriteLine(e.Message);
-    Environment.Exit(-1);
+    var minLocation = seeds
+        .Select(seed => maps.Aggregate(seed, (current, map) => map.Transform(current)))
+        .Min();
+
+    Console.WriteLine(minLocation);
 }
 
-Console.WriteLine(seeds);
+static void Part2(List<long> seeds, List<Map> maps)
+{
+    if (seeds.Count % 2 != 0)
+        throw new ArgumentException("Seed list must be divisible by 2!");
+
+}
