@@ -18,13 +18,13 @@ Part2(seeds, maps);
 
 return;
 
-static void Part1(List<long> seeds, List<Map> maps)
+static long Part1(List<long> seeds, List<Map> maps)
 {
     var minLocation = seeds
         .Select(seed => maps.Aggregate(seed, (current, map) => map.Transform(current)))
         .Min();
 
-    Console.WriteLine(minLocation);
+    return minLocation;
 }
 
 static void Part2(List<long> seeds, List<Map> maps)
@@ -32,4 +32,28 @@ static void Part2(List<long> seeds, List<Map> maps)
     if (seeds.Count % 2 != 0)
         throw new ArgumentException("Seed list must be divisible by 2!");
 
+    var newSeeds = new List<IEnumerable<long>>();
+    for (var i = 0; i % 2 == 0 && i < seeds.Count; i += 2)
+        newSeeds.Add(seeds[i].Range(seeds[i + 1]));
+
+    var minima = new List<long>();
+    for (var i = 0; i < newSeeds.Count; i++)
+    {
+        var min = Part1(newSeeds[i].ToList(), maps);
+        minima.Add(min);
+    }
+    
+    
+    Console.WriteLine(minima.Min());
+}
+
+public static class ExtentionLong
+{
+    public static IEnumerable<long> Range(this long source, long length)
+    {
+        for (var i = source; i < length; i++)
+        {
+            yield return i;
+        }
+    }
 }
