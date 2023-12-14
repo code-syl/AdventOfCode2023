@@ -7,4 +7,3 @@ public record Card(char Label, int Value) : IComparable<Card>
         return other is null ? 1 : Value.CompareTo(other.Value);
     }
 }
-

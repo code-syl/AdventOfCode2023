@@ -23,11 +23,14 @@ public record Hand : IComparable<Hand>
 
     public int CompareTo(Hand? other)
     {
-        var value = Type.CompareTo(other!.Type);
+        if (other is null)
+            return 1;
+        
+        var value = Type.CompareTo(other.Type);
         if (value == 0)
         {
             return other!.Cards
-                .Select((t, card) => Cards[card].CompareTo(other.Cards[card]))
+                .Select((_, card) => Cards[card].CompareTo(other.Cards[card]))
                 .FirstOrDefault(result => result != 0);
         }
         
