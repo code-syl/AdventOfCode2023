@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Day05;
+﻿using Day05;
 
 const string input = "input.txt";
 
