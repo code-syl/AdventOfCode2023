@@ -1,4 +1,5 @@
-﻿using Day05;
+﻿using System.ComponentModel.DataAnnotations;
+using Day05;
 
 const string input = "input.txt";
 
@@ -13,12 +14,12 @@ var maps = data[1..]
     .Select(chunk => new Map(chunk))
     .ToList();
 
-Part1(seeds, maps);
-Part2(seeds, maps);
+Console.WriteLine($"Part 1: {Part1(seeds, maps)}");
+Console.WriteLine($"Part 2: {Part2(seeds, maps)}");
 
 return;
 
-static long Part1(List<long> seeds, List<Map> maps)
+static long Part1(IEnumerable<long> seeds, IReadOnlyCollection<Map> maps)
 {
     var minLocation = seeds
         .Select(seed => maps.Aggregate(seed, (current, map) => map.Transform(current)))
@@ -27,33 +28,47 @@ static long Part1(List<long> seeds, List<Map> maps)
     return minLocation;
 }
 
-static void Part2(List<long> seeds, List<Map> maps)
+static long Part2(IReadOnlyList<long> seeds, List<Map> maps)
 {
     if (seeds.Count % 2 != 0)
         throw new ArgumentException("Seed list must be divisible by 2!");
 
-    var newSeeds = new List<IEnumerable<long>>();
-    for (var i = 0; i % 2 == 0 && i < seeds.Count; i += 2)
-        newSeeds.Add(seeds[i].Range(seeds[i + 1]));
-
-    var minima = new List<long>();
-    for (var i = 0; i < newSeeds.Count; i++)
-    {
-        var min = Part1(newSeeds[i].ToList(), maps);
-        minima.Add(min);
-    }
+    var seedRanges = new List<(long From, long To)>();
+    for (var i = 0; i < seeds.Count; i += 2) 
+        seedRanges.Add((From: seeds[i], To: seeds[i] + seeds[i + 1] - 1));
     
-    
-    Console.WriteLine(minima.Min());
-}
-
-public static class ExtentionLong
-{
-    public static IEnumerable<long> Range(this long source, long length)
+    foreach (var map in maps)
     {
-        for (var i = source; i < length; i++)
+        var orderedSets = map.Sets.OrderBy(s => s.From).ToList();
+        var newRanges = new List<(long From, long To)>();
+        foreach (var seedRange in seedRanges)
         {
-            yield return i;
+            var range = seedRange;
+            foreach (var orderedSet in orderedSets)
+            {
+                if (range.From < orderedSet.From)
+                {
+                    newRanges.Add((range.From, Math.Min(range.To, orderedSet.From - 1)));
+                    range.From = orderedSet.From;
+                    if (range.From > range.To)
+                        break;
+                }
+
+                if (range.From <= orderedSet.To)
+                {
+                    newRanges.Add((range.From + orderedSet.Adjustment, Math.Min(range.To, orderedSet.To) + orderedSet.Adjustment));
+                    range.From = orderedSet.To + 1;
+                    if (range.From > range.To)
+                        break;
+                }
+            }
+            
+            if (range.From <= range.To)
+                newRanges.Add(range);
         }
+
+        seedRanges = newRanges;
     }
+
+    return seedRanges.Min(r => r.From);
 }

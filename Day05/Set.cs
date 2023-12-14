@@ -2,9 +2,12 @@
 
 public class Set
 {
-    private readonly long _destinationStart;
-    private readonly long _sourceStart;
-    private readonly long _rangeLength;
+    public long DestinationStart { get; }
+    public long SourceStart { get; }
+    public long RangeLength { get; }
+    public long From => SourceStart;
+    public long To => SourceStart + RangeLength - 1;
+    public long Adjustment => DestinationStart - SourceStart;
 
     public Set(string data)
     {
@@ -12,11 +15,11 @@ public class Set
         if (numbers.Count != 3)
             throw new ArgumentException("The data is dirty, needs 3 numbers separated by a space.");
 
-        _destinationStart = numbers[0];
-        _sourceStart = numbers[1];
-        _rangeLength = numbers[2];
+        DestinationStart = numbers[0];
+        SourceStart = numbers[1];
+        RangeLength = numbers[2];
     }
 
-    public bool IsInRange(long number) => (number >= _sourceStart) && (number < _sourceStart + _rangeLength);
-    public long Transform(long source) => source + (_destinationStart - _sourceStart);
+    public bool IsInRange(long number) => (number >= SourceStart) && (number < SourceStart + RangeLength);
+    public long Transform(long source) => source + (DestinationStart - SourceStart);
 }
