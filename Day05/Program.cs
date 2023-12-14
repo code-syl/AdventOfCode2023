@@ -1,8 +1,8 @@
 ﻿using Day05;
 
 const string input = "input.txt";
-
 using var streamReader = new StreamReader(input);
+
 var data = (await streamReader.ReadToEndAsync()).Split("\r\n\r\n");
 var seeds = data[0]
     .Split(": ")[1]
@@ -15,7 +15,6 @@ var maps = data[1..]
 
 Console.WriteLine($"Part 1: {Part1(seeds, maps)}");
 Console.WriteLine($"Part 2: {Part2(seeds, maps)}");
-
 return;
 
 static long Part1(IEnumerable<long> seeds, IReadOnlyCollection<Map> maps)
