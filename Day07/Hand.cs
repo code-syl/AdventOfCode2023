@@ -28,7 +28,7 @@ public record Hand : IComparable<Hand>
         var value = _type.CompareTo(other._type);
         if (value == 0)
         {
-            return other!._cards
+            return other._cards
                 .Select((_, card) => _cards[card].CompareTo(other._cards[card]))
                 .FirstOrDefault(result => result != 0);
         }
