@@ -2,23 +2,22 @@
 
 public record Hand : IComparable<Hand>
 {
-    public List<Card> Cards { get; init; } = new ();
-    public int Bet { get; init; }
-    public HandType Type { get; init; }
+    public int Bet { get; }
+    private readonly HandType _type;
+    private readonly List<Card> _cards = new ();
     
-    private readonly char[] _cardLabels = { '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A' };
-    
-    public Hand(string line)
+    public Hand(string line, bool jokerMode = false)
     {
         var split = line.Split(" ");
         Bet = int.Parse(split[1]);
         
         foreach (var c in split[0])
         {
-            Cards.Add(new Card(c, Array.IndexOf(_cardLabels,c)));
+            _cards.Add(new Card(c,
+                Array.IndexOf(jokerMode ? HandExtensions.CharLabelsJoker : HandExtensions.CharLabels, c)));
         }
-
-        Type = HandExtensions.GetHandType(split[0]);
+        
+        _type = jokerMode ? HandExtensions.GetHandTypeJokerMode(split[0]) : HandExtensions.GetHandType(split[0]);
     }
 
     public int CompareTo(Hand? other)
@@ -26,11 +25,11 @@ public record Hand : IComparable<Hand>
         if (other is null)
             return 1;
         
-        var value = Type.CompareTo(other.Type);
+        var value = _type.CompareTo(other._type);
         if (value == 0)
         {
-            return other!.Cards
-                .Select((_, card) => Cards[card].CompareTo(other.Cards[card]))
+            return other!._cards
+                .Select((_, card) => _cards[card].CompareTo(other._cards[card]))
                 .FirstOrDefault(result => result != 0);
         }
         
@@ -51,6 +50,9 @@ public enum HandType
 
 public static class HandExtensions
 {
+    public static readonly char[] CharLabels = { '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A' }; 
+    public static readonly char[] CharLabelsJoker = { 'J', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'Q', 'K', 'A' };
+    
     public static HandType GetHandType(string handString)
     {
         return handString switch
@@ -69,14 +71,38 @@ public static class HandExtensions
             _ => HandType.HighCard
         };
     }
-    private static bool HasDefinedUniques(this string input, int count1, int countCount, int count2 = 0)
-    {
-        count2 = count2 == 0 ? count1 : count2;
 
+    public static HandType GetHandTypeJokerMode(string handString)
+    {
+        // Joker = J and can act as another card, making it possible to have a higher type.
+        // For example, JJJJ2 is a FiveOfAKind, but JJJJ3 is a FiveOfAKind with a higher value.
+        var possibleHands = GeneratePossibleHandsWithJoker(handString);
+        return possibleHands.Max(GetHandType);
+    }
+    
+    private static bool HasDefinedUniques(this string input, int count, int countCount)
+    {
         return input
             .GroupBy(c => c)
             .ToDictionary(g => g.Key, g => g.Count())
             .Values
-            .Count(v => v == count1 || v == count2) == countCount;
+            .Count(v => v == count) == countCount;
+    }
+
+    private static IEnumerable<string> GeneratePossibleHandsWithJoker(string handString)
+    {
+        var jokerCount = handString.Count(c => c == 'J');
+        var cardLabels = new[] { 'J', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'Q', 'K', 'A' };
+
+        foreach (var cardLabel in cardLabels)
+        {
+            var possibleHand = handString;
+            for (var i = 0; i < jokerCount; i++)
+            {
+                possibleHand = possibleHand.Replace('J', cardLabel);
+            }
+            
+            yield return possibleHand;
+        }
     }
 }
