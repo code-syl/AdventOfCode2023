@@ -17,7 +17,6 @@ while (streamReader.Peek() > 0)
 
 Console.WriteLine($"Part 1: {Part1(hands)}");
 Console.WriteLine($"Part 2: {Part2(jokerHands)}");
-
 return;
 
 static long Part1(IReadOnlyList<Hand> hands)
@@ -30,8 +29,5 @@ static long Part1(IReadOnlyList<Hand> hands)
 
 static long Part2(IReadOnlyList<Hand> hands)
 {
-    var tempHands = new List<Hand>(hands);
-    tempHands.Sort();
-
-    return tempHands.Select((hand, index) => (long)hand.Bet * (index + 1)).Sum();
+    return Part1(hands);
 }
