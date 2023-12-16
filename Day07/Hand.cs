@@ -14,7 +14,7 @@ public record Hand : IComparable<Hand>
         foreach (var c in split[0])
         {
             _cards.Add(new Card(c,
-                Array.IndexOf(jokerMode ? HandExtensions.CharLabelsJoker : HandExtensions.CharLabels, c)));
+                Array.IndexOf(jokerMode ? HandExtensions.CardLabelsJoker : HandExtensions.CardLabels, c)));
         }
         
         _type = jokerMode ? HandExtensions.GetHandTypeJokerMode(split[0]) : HandExtensions.GetHandType(split[0]);
@@ -50,8 +50,8 @@ public enum HandType
 
 public static class HandExtensions
 {
-    public static readonly char[] CharLabels = { '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A' }; 
-    public static readonly char[] CharLabelsJoker = { 'J', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'Q', 'K', 'A' };
+    public static readonly char[] CardLabels = { '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A' }; 
+    public static readonly char[] CardLabelsJoker = { 'J', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'Q', 'K', 'A' };
     
     public static HandType GetHandType(string handString)
     {
@@ -97,10 +97,8 @@ public static class HandExtensions
             yield return handString;
             yield break;
         }
-        
-        var cardLabels = new[] { 'J', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'Q', 'K', 'A' };
 
-        foreach (var cardLabel in cardLabels)
+        foreach (var cardLabel in CardLabelsJoker)
         {
             var possibleHand = handString;
             possibleHand = possibleHand.Replace('J', cardLabel);
