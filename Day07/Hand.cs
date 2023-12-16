@@ -97,11 +97,7 @@ public static class HandExtensions
         foreach (var cardLabel in cardLabels)
         {
             var possibleHand = handString;
-            for (var i = 0; i < jokerCount; i++)
-            {
-                possibleHand = possibleHand.Replace('J', cardLabel);
-            }
-            
+            possibleHand = possibleHand.Replace('J', cardLabel);
             yield return possibleHand;
         }
     }
