@@ -92,12 +92,19 @@ public static class HandExtensions
     private static IEnumerable<string> GeneratePossibleHandsWithJoker(string handString)
     {
         var jokerCount = handString.Count(c => c == 'J');
+        if (jokerCount == 0)
+        {
+            yield return handString;
+            yield break;
+        }
+        
         var cardLabels = new[] { 'J', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'Q', 'K', 'A' };
 
         foreach (var cardLabel in cardLabels)
         {
             var possibleHand = handString;
             possibleHand = possibleHand.Replace('J', cardLabel);
+            
             yield return possibleHand;
         }
     }
