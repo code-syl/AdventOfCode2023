@@ -57,7 +57,10 @@ static int Part1(string instructions, IReadOnlyList<MapPoint> mapPoints)
 static long Part2(string instructions, IReadOnlyList<MapPoint> mapPoints)
 {
     // This only works because of the structure of the input file. :(
-    var startingLocations = mapPoints.Where(mp => mp.Location.EndsWith('A')).Select(mp => mp.Location);
+    var startingLocations = mapPoints
+        .Where(mp => mp.Location.EndsWith('A'))
+        .Select(mp => mp.Location)
+        .ToList();
     var stepsPerStartingLocation = new List<long>();
 
     foreach (var startingLocation in startingLocations)
