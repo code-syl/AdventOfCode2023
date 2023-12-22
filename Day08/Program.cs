@@ -14,19 +14,19 @@ var mapPoints = data[1..].Select(line =>
     return new MapPoint(location, leftRight[0], leftRight[1]);
 }).OrderBy(mp => mp.Location).ToList();
 
-Console.WriteLine($"Part 1: {Part1(instructions, mapPoints, "AAA")}");
+Console.WriteLine($"Part 1: {Part1(instructions, mapPoints)}");
 Console.WriteLine($"Part 2: {Part2(instructions, mapPoints)}");
 return;
 
 
-static int Part1(string instructions, IReadOnlyList<MapPoint> mapPoints, string startingLocation)
+static int Part1(string instructions, IReadOnlyList<MapPoint> mapPoints)
 {
     // Based on the instructions, go to the left or right element of the map point you are currently at. 
     // How many steps does it take to go to ZZZ, starting at AAA? 
     // If the instructions do not lead to ZZZ, repeat the instructions until you reach ZZZ.
     var steps = 0;
     var reached = false;
-    var currentLocation = startingLocation;
+    var currentLocation = "AAA";
 
     while (!reached)
     {
